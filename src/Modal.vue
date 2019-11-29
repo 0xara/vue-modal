@@ -24,8 +24,6 @@
         position: relative;
         //width: auto;
         margin: auto;
-        border-radius: 2px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
         transition: all .3s ease;
         width: 90%;
         //font-family: Helvetica, Arial, sans-serif;
@@ -155,13 +153,14 @@
               @click.stop.prevent="handleHideModal">
               <i class="fa fa-close"></i>
             </a>
-            <div class="modal-header">
+            <slot></slot>
+            <div class="modal-header" v-if="this.$slots.header">
               <slot name="header"></slot>
             </div>
-            <div class="modal-body container-full">
+            <div class="modal-body container-full" v-if="this.$slots.body">
               <slot name="body"></slot>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" v-if="this.$slots.footer">
               <slot name="footer"></slot>
             </div>
           </div>
@@ -187,7 +186,13 @@ export default {
         strict: {},
         name: {},
         allowToClose: {},
-        containerStyle: { default: () => {} },
+        containerStyle: { default: () => {
+            return {
+              'border-radius': '2px',
+              'box-shadow': '0 2px 8px rgba(0, 0, 0, .33)'
+            }
+          }
+        },
         size: { default: 'md' },
         center: { default: false },
         closeButton: { type: Boolean, default: true },
