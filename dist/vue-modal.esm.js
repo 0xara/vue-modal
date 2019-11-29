@@ -3,7 +3,7 @@ import { getWidth } from 'js-helpers/dist/element/dims';
 import { addListener } from 'js-helpers/dist/element/event';
 import { is } from 'js-helpers/dist/element/is';
 
-//
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var script = {
 
@@ -18,6 +18,12 @@ var script = {
                 return {
                     'border-radius': '2px',
                     'box-shadow': '0 2px 8px rgba(0, 0, 0, .33)'
+                };
+            }
+        },
+        maskStyle: { default: function _default() {
+                return {
+                    'background-color': 'rgba(0, 0, 0, .5)'
                 };
             }
         },
@@ -40,9 +46,10 @@ var script = {
         containerClass: function containerClass() {
             return ['modal-' + this.size, { 'modal-center': this.center }];
         },
-        maskStyle: function maskStyle() {
-            if (this.scroll) return {};
-            return { overflow: 'hidden' };
+        maskStyles: function maskStyles() {
+            var defaultStyle = this.maskStyle || {};
+            if (this.scroll) return _extends({}, defaultStyle);
+            return _extends({ overflow: 'hidden' }, defaultStyle);
         },
         transition: function transition() {
             if (this.center) return 'modal-fade';
@@ -153,7 +160,7 @@ function styleInject(css, ref) {
   }
 }
 
-var css = ".modal-mask{position:fixed;z-index:9998;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.5);display:block;-webkit-transition:opacity .3s ease;transition:opacity .3s ease;overflow-x:hidden;overflow-y:auto}.modal-wrapper{display:block;vertical-align:middle;padding-top:30px}.modal-container{position:relative;margin:auto;-webkit-transition:all .3s ease;transition:all .3s ease;width:90%}.modal-container.modal-center{position:fixed;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}@media (min-width:768px){.modal-container{width:600px;margin:auto;border-radius:6px}}@media (min-width:992px){.modal-container.modal-md{width:900px}.modal-container.modal-lg{width:900px}}@media (min-width:1200px){.modal-container.modal-lg{width:1180px}}.modal-header{border-radius:5px 5px 0 0}.modal-header h3{padding:18px 14px;margin:0;font-size:18px;color:inherit}.modal-body{width:100%;height:100%;padding:20px 30px;background-color:#fff}.modal-default-button{float:right}.modal-close{position:absolute;top:10px;left:10px}.modal-fade-enter,.modal-fade-leave-to{opacity:0}.modal-fade-enter-active,.modal-fade-leave-active{-webkit-transition:opacity .3s ease;transition:opacity .3s ease}.modal-enter,.modal-leave-to{opacity:0}.modal-enter-active,.modal-leave-active{-webkit-transition:opacity .3s ease;transition:opacity .3s ease}.modal-enter .modal-container{-webkit-transform:translate(0,-25%);transform:translate(0,-25%);-webkit-transition:-webkit-transform .3s ease-out;transition:-webkit-transform .3s ease-out;transition:transform .3s ease-out;transition:transform .3s ease-out, -webkit-transform .3s ease-out}.modal-leave-to .modal-container{-webkit-transform:translate(0,-25%);transform:translate(0,-25%);-webkit-transition:-webkit-transform .3s ease-in;transition:-webkit-transform .3s ease-in;transition:transform .3s ease-in;transition:transform .3s ease-in, -webkit-transform .3s ease-in}.modal-enter-active .modal-container,.modal-leave-active .modal-container{-webkit-transition:1s;transition:1s}";
+var css = ".modal-mask{position:fixed;z-index:9998;top:0;left:0;width:100%;height:100%;display:block;-webkit-transition:opacity .3s ease;transition:opacity .3s ease;overflow-x:hidden;overflow-y:auto}.modal-wrapper{display:block;vertical-align:middle;padding-top:30px;height:100%}.modal-container{position:relative;margin:auto;-webkit-transition:all .3s ease;transition:all .3s ease;width:90%}.modal-container.modal-center{position:fixed;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}@media (min-width:768px){.modal-container{width:600px;margin:auto;border-radius:6px}}@media (min-width:992px){.modal-container.modal-md{width:900px}.modal-container.modal-lg{width:900px}}@media (min-width:1200px){.modal-container.modal-lg{width:1180px}}.modal-header{border-radius:5px 5px 0 0}.modal-header h3{padding:18px 14px;margin:0;font-size:18px;color:inherit}.modal-body{width:100%;height:100%;padding:20px 30px;background-color:#fff}.modal-default-button{float:right}.modal-close{position:absolute;top:10px;left:10px}.modal-fade-enter,.modal-fade-leave-to{opacity:0}.modal-fade-enter-active,.modal-fade-leave-active{-webkit-transition:opacity .3s ease;transition:opacity .3s ease}.modal-enter,.modal-leave-to{opacity:0}.modal-enter-active,.modal-leave-active{-webkit-transition:opacity .3s ease;transition:opacity .3s ease}.modal-enter .modal-container{-webkit-transform:translate(0,-25%);transform:translate(0,-25%);-webkit-transition:-webkit-transform .3s ease-out;transition:-webkit-transform .3s ease-out;transition:transform .3s ease-out;transition:transform .3s ease-out, -webkit-transform .3s ease-out}.modal-leave-to .modal-container{-webkit-transform:translate(0,-25%);transform:translate(0,-25%);-webkit-transition:-webkit-transform .3s ease-in;transition:-webkit-transform .3s ease-in;transition:transform .3s ease-in;transition:transform .3s ease-in, -webkit-transform .3s ease-in}.modal-enter-active .modal-container,.modal-leave-active .modal-container{-webkit-transition:1s;transition:1s}";
 styleInject(css);
 
 function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier
@@ -245,7 +252,7 @@ var normalizeComponent_1 = normalizeComponent;
 var __vue_script__ = script;
 /* template */
 var __vue_render__ = function __vue_render__() {
-  var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('portal', { attrs: { "to": _vm.portal } }, [_c('transition', { attrs: { "name": _vm.transition } }, [_c('div', _vm._b({ directives: [{ name: "show", rawName: "v-show", value: _vm.show, expression: "show" }], staticClass: "modal-mask", class: { zIndexHigh: _vm.strict == 1 }, staticStyle: { "display": "none" }, style: _vm.maskStyle, attrs: { "transition": _vm.transition } }, 'div', _vm.$attrs, false), [_c('div', { staticClass: "modal-wrapper" }, [_c('div', { staticClass: "modal-container", class: _vm.containerClass, style: _vm.containerStyle }, [_vm.closeButton ? _c('a', { staticClass: "modal-close close", on: { "click": function click($event) {
+  var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('portal', { attrs: { "to": _vm.portal } }, [_c('transition', { attrs: { "name": _vm.transition } }, [_c('div', _vm._b({ directives: [{ name: "show", rawName: "v-show", value: _vm.show, expression: "show" }], staticClass: "modal-mask", class: { zIndexHigh: _vm.strict == 1 }, staticStyle: { "display": "none" }, style: _vm.maskStyles, attrs: { "transition": _vm.transition } }, 'div', _vm.$attrs, false), [_c('div', { staticClass: "modal-wrapper" }, [_c('div', { staticClass: "modal-container", class: _vm.containerClass, style: _vm.containerStyle }, [_vm.closeButton ? _c('a', { staticClass: "modal-close close", on: { "click": function click($event) {
         $event.stopPropagation();$event.preventDefault();return _vm.handleHideModal($event);
       } } }, [_c('i', { staticClass: "fa fa-close" })]) : _vm._e(), _vm._v(" "), _vm._t("default"), _vm._v(" "), this.$slots.header ? _c('div', { staticClass: "modal-header" }, [_vm._t("header")], 2) : _vm._e(), _vm._v(" "), this.$slots.body ? _c('div', { staticClass: "modal-body container-full" }, [_vm._t("body")], 2) : _vm._e(), _vm._v(" "), this.$slots.footer ? _c('div', { staticClass: "modal-footer" }, [_vm._t("footer")], 2) : _vm._e()], 2)])])])], 1);
 };

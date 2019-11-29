@@ -6,7 +6,6 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, .5);
         display: block;
         transition: opacity .3s ease;
         overflow-x: hidden;
@@ -18,6 +17,7 @@
         vertical-align: middle;
         //min-width: 1200px;
         padding-top: 30px;
+        height: 100%;
     }
 
     .modal-container {
@@ -137,7 +137,7 @@
       <div
         v-show="show"
         v-bind="$attrs"
-        :style="maskStyle"
+        :style="maskStyles"
         :class="{ zIndexHigh:strict==1 }"
         :transition="transition"
         class="modal-mask"
@@ -193,6 +193,12 @@ export default {
             }
           }
         },
+        maskStyle:  { default: () => {
+            return {
+              'background-color': 'rgba(0, 0, 0, .5)'
+            };
+          }
+        },
         size: { default: 'md' },
         center: { default: false },
         closeButton: { type: Boolean, default: true },
@@ -214,9 +220,10 @@ export default {
                 { 'modal-center': this.center }
             ];
         },
-        maskStyle() {
-            if(this.scroll) return {};
-            return { overflow: 'hidden' };
+        maskStyles() {
+            const defaultStyle = this.maskStyle || {};
+            if(this.scroll) return { ...defaultStyle };
+            return { overflow: 'hidden', ...defaultStyle };
         },
         transition() {
             if(this.center) return 'modal-fade';
