@@ -93,9 +93,9 @@ var script = {
 
             this.$bus.$on('change-' + this.modal_name + '-modal-state', function (state) {
                 if (state) {
-                    self.handleShowModal();
+                    self.open();
                 } else {
-                    self.handleHideModal();
+                    self.close();
                 }
             });
         },
@@ -107,16 +107,16 @@ var script = {
             addListener(document, 'keydown', function (e) {
                 if (self.hasAllowToCloseNow()) {
                     if (e.keyCode == 27) {
-                        self.handleHideModal();
+                        self.close();
                         self.$bus.$emit((self.modal_name ? self.modal_name + '-' : '') + 'modal-closed');
                     }
                 }
             });
 
             addListener(document, 'click touchstart', function (e) {
-                if (self.show && (is(e.target, '.modal-mask') || is(e.target, '.modal-wrapper'))) {
+                if (self.isOpen() && (is(e.target, '.modal-mask') || is(e.target, '.modal-wrapper'))) {
                     if (self.hasAllowToCloseNow()) {
-                        self.handleHideModal();
+                        self.close();
                         self.$bus.$emit((self.modal_name ? self.modal_name + '-' : '') + 'modal-closed');
                     }
                 }
@@ -125,12 +125,6 @@ var script = {
         hasAllowToCloseNow: function hasAllowToCloseNow() {
             return this.allowToClose;
         },
-        handleHideModal: function handleHideModal() {
-            this.close();
-        },
-        handleShowModal: function handleShowModal() {
-            this.open();
-        },
         open: function open() {
             this.show_modal = true;
             this.$emit('show-modal');
@@ -138,6 +132,12 @@ var script = {
         close: function close() {
             this.show_modal = false;
             this.$emit('hide-modal');
+        },
+        isOpen: function isOpen() {
+            return this.show || this.show_modal;
+        },
+        isClosed: function isClosed() {
+            return !this.show && !this.show_modal;
         }
     }
 };
@@ -262,7 +262,7 @@ var __vue_script__ = script;
 /* template */
 var __vue_render__ = function __vue_render__() {
   var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('portal', { attrs: { "to": _vm.portal } }, [_c('transition', { attrs: { "name": _vm.transition } }, [_c('div', _vm._b({ directives: [{ name: "show", rawName: "v-show", value: _vm.show || _vm.show_modal, expression: "show || show_modal" }], staticClass: "modal-mask", class: { zIndexHigh: _vm.strict == 1 }, staticStyle: { "display": "none" }, style: _vm.maskStyles, attrs: { "transition": _vm.transition } }, 'div', _vm.$attrs, false), [_c('div', { staticClass: "modal-wrapper" }, [_c('div', { staticClass: "modal-container", class: _vm.containerClass, style: _vm.containerStyle }, [_vm.closeButton ? _c('a', { staticClass: "modal-close close", on: { "click": function click($event) {
-        $event.stopPropagation();$event.preventDefault();return _vm.handleHideModal($event);
+        $event.stopPropagation();$event.preventDefault();return _vm.close($event);
       } } }, [_c('i', { staticClass: "fa fa-close" })]) : _vm._e(), _vm._v(" "), _vm._t("default"), _vm._v(" "), this.$slots.header ? _c('div', { staticClass: "modal-header" }, [_vm._t("header")], 2) : _vm._e(), _vm._v(" "), this.$slots.body ? _c('div', { staticClass: "modal-body container-full" }, [_vm._t("body")], 2) : _vm._e(), _vm._v(" "), this.$slots.footer ? _c('div', { staticClass: "modal-footer" }, [_vm._t("footer")], 2) : _vm._e()], 2)])])])], 1);
 };
 var __vue_staticRenderFns__ = [];

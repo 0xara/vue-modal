@@ -150,7 +150,7 @@
             <a
               v-if="closeButton"
               class="modal-close close"
-              @click.stop.prevent="handleHideModal">
+              @click.stop.prevent="close">
               <i class="fa fa-close"></i>
             </a>
             <slot></slot>
@@ -270,9 +270,9 @@ export default {
 
             this.$bus.$on(`change-${this.modal_name}-modal-state`, (state) => {
                 if(state) {
-                    self.handleShowModal();
+                    self.open();
                 } else{
-                    self.handleHideModal();
+                    self.close();
                 }
             });
         },
@@ -285,18 +285,18 @@ export default {
             addListener(document, 'keydown', (e) => {
                 if(self.hasAllowToCloseNow()) {
                     if(e.keyCode == 27) {
-                        self.handleHideModal();
+                        self.close();
                         self.$bus.$emit(`${self.modal_name ? `${self.modal_name}-` : ''}modal-closed`);
                     }
                 }
             });
 
             addListener(document, 'click touchstart', (e) => {
-                if(self.show &&
+                if(self.isOpen() &&
                     (is(e.target, '.modal-mask') || is(e.target, '.modal-wrapper'))
                 ) {
                     if(self.hasAllowToCloseNow()) {
-                        self.handleHideModal();
+                        self.close();
                         self.$bus.$emit(`${self.modal_name ? `${self.modal_name}-` : ''}modal-closed`);
                     }
                 }
@@ -307,13 +307,6 @@ export default {
             return this.allowToClose;
         },
 
-        handleHideModal() {
-            this.close();
-        },
-
-        handleShowModal() {
-            this.open();
-        },
         open() {
           this.show_modal = true;
           this.$emit('show-modal');
@@ -321,6 +314,12 @@ export default {
         close() {
           this.show_modal = false;
           this.$emit('hide-modal');
+        },
+        isOpen() {
+          return this.show || this.show_modal;
+        },
+        isClosed() {
+          return !this.show && !this.show_modal;
         }
     }
 };
