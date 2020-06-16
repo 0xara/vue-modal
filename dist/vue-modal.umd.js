@@ -127,16 +127,16 @@
                 return this.allowToClose;
             },
             handleHideModal: function handleHideModal() {
-                this.hide();
+                this.close();
             },
             handleShowModal: function handleShowModal() {
-                this.show();
+                this.open();
             },
-            show: function show() {
+            open: function open() {
                 this.show_modal = true;
                 this.$emit('show-modal');
             },
-            hide: function hide() {
+            close: function close() {
                 this.show_modal = false;
                 this.$emit('hide-modal');
             }

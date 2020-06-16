@@ -308,17 +308,17 @@ export default {
         },
 
         handleHideModal() {
-            this.hide();
+            this.close();
         },
 
         handleShowModal() {
-            this.show();
+            this.open();
         },
-        show() {
+        open() {
           this.show_modal = true;
           this.$emit('show-modal');
         },
-        hide() {
+        close() {
           this.show_modal = false;
           this.$emit('hide-modal');
         }
