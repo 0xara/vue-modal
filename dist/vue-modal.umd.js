@@ -38,7 +38,8 @@
 
         data: function data() {
             return {
-                modal_name: ''
+                modal_name: '',
+                show_modal: false
             };
         },
 
@@ -126,10 +127,18 @@
                 return this.allowToClose;
             },
             handleHideModal: function handleHideModal() {
-                this.$emit('hide-modal');
+                this.hide();
             },
             handleShowModal: function handleShowModal() {
+                this.show();
+            },
+            show: function show() {
+                this.show_modal = true;
                 this.$emit('show-modal');
+            },
+            hide: function hide() {
+                this.show_modal = false;
+                this.$emit('hide-modal');
             }
         }
     };
@@ -253,7 +262,7 @@
     var __vue_script__ = script;
     /* template */
     var __vue_render__ = function __vue_render__() {
-      var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('portal', { attrs: { "to": _vm.portal } }, [_c('transition', { attrs: { "name": _vm.transition } }, [_c('div', _vm._b({ directives: [{ name: "show", rawName: "v-show", value: _vm.show, expression: "show" }], staticClass: "modal-mask", class: { zIndexHigh: _vm.strict == 1 }, staticStyle: { "display": "none" }, style: _vm.maskStyles, attrs: { "transition": _vm.transition } }, 'div', _vm.$attrs, false), [_c('div', { staticClass: "modal-wrapper" }, [_c('div', { staticClass: "modal-container", class: _vm.containerClass, style: _vm.containerStyle }, [_vm.closeButton ? _c('a', { staticClass: "modal-close close", on: { "click": function click($event) {
+      var _vm = this;var _h = _vm.$createElement;var _c = _vm._self._c || _h;return _c('portal', { attrs: { "to": _vm.portal } }, [_c('transition', { attrs: { "name": _vm.transition } }, [_c('div', _vm._b({ directives: [{ name: "show", rawName: "v-show", value: _vm.show || _vm.show_modal, expression: "show || show_modal" }], staticClass: "modal-mask", class: { zIndexHigh: _vm.strict == 1 }, staticStyle: { "display": "none" }, style: _vm.maskStyles, attrs: { "transition": _vm.transition } }, 'div', _vm.$attrs, false), [_c('div', { staticClass: "modal-wrapper" }, [_c('div', { staticClass: "modal-container", class: _vm.containerClass, style: _vm.containerStyle }, [_vm.closeButton ? _c('a', { staticClass: "modal-close close", on: { "click": function click($event) {
             $event.stopPropagation();$event.preventDefault();return _vm.handleHideModal($event);
           } } }, [_c('i', { staticClass: "fa fa-close" })]) : _vm._e(), _vm._v(" "), _vm._t("default"), _vm._v(" "), this.$slots.header ? _c('div', { staticClass: "modal-header" }, [_vm._t("header")], 2) : _vm._e(), _vm._v(" "), this.$slots.body ? _c('div', { staticClass: "modal-body container-full" }, [_vm._t("body")], 2) : _vm._e(), _vm._v(" "), this.$slots.footer ? _c('div', { staticClass: "modal-footer" }, [_vm._t("footer")], 2) : _vm._e()], 2)])])])], 1);
     };
