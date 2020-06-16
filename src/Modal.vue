@@ -135,7 +135,7 @@
   <portal :to="portal">
     <transition :name="transition">
       <div
-        v-show="show"
+        v-show="show || show_modal"
         v-bind="$attrs"
         :style="maskStyles"
         :class="{ zIndexHigh:strict==1 }"
@@ -209,7 +209,8 @@ export default {
 
     data() {
         return{
-            modal_name: ''
+            modal_name: '',
+            show_modal: false
         };
     },
 
@@ -307,11 +308,19 @@ export default {
         },
 
         handleHideModal() {
-            this.$emit('hide-modal');
+            this.hide();
         },
 
         handleShowModal() {
-            this.$emit('show-modal');
+            this.show();
+        },
+        show() {
+          this.show_modal = true;
+          this.$emit('show-modal');
+        },
+        hide() {
+          this.show_modal = false;
+          this.$emit('hide-modal');
         }
     }
 };
